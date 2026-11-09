@@ -1,0 +1,21 @@
+# Runs the Preflight merge gate on this repo's own pull requests.
+# Other repos use extras/github/preflight.yml instead.
+
+name: Preflight
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  id-token: write
+
+jobs:
+  preflight:
+    uses: ./.github/workflows/preflight-review.yml
+    secrets:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}

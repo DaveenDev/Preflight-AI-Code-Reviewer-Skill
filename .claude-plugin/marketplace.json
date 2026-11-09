@@ -2,15 +2,15 @@
   "name": "daveendev",
   "owner": {
     "name": "Ruben \"Dave\" Duran",
-    "url": "https://github.com/daveenDev"
+    "url": "https://github.com/DaveenDev"
   },
-  "description": "Free AI code review tools for Claude Code by daveenDev.",
+  "description": "Free AI code review tools for Claude Code by DaveenDev.",
   "plugins": [
     {
       "name": "preflight",
       "source": "./plugins/preflight",
       "description": "Deep code review (security, business logic, edge cases, N+1 queries, performance, architecture) plus a gate that blocks git push/merge until the review passes.",
-      "version": "1.0.0"
+      "version": "1.1.0"
     }
   ]
 }

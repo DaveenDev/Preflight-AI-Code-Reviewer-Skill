@@ -1,0 +1,31 @@
+# Preflight merge gate: copy this file to .github/workflows/preflight.yml in
+# any repo you want gated. Then:
+#   1. Add an ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN repo secret.
+#   2. Install the Claude GitHub app on the repo (https://github.com/apps/claude).
+#   3. Add a branch ruleset on your default branch that requires a pull request
+#      and requires the "preflight / Preflight review" status check.
+# Full guide: https://github.com/DaveenDev/Preflight-AI-Code-Reviewer-Skill#github-merge-gate
+
+name: Preflight
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  id-token: write
+
+jobs:
+  preflight:
+    uses: DaveenDev/Preflight-AI-Code-Reviewer-Skill/.github/workflows/preflight-review.yml@main
+    secrets:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+    # Optional settings:
+    # with:
+    #   model: claude-opus-5-5
+    #   extra_instructions: |
+    #     Orders can't be refunded after 30 days. Only admins can change prices.

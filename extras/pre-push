@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # Git pre-push hook: runs the preflight skill (via Claude Code) before every
 # push from your terminal, VS Code, or any Git client.
-# Install: cp pre-push .git/hooks/pre-push && chmod +x .git/hooks/pre-push
+# Install (from your repo root):
+#   curl -fsSL https://raw.githubusercontent.com/DaveenDev/Preflight-AI-Code-Reviewer-Skill/main/extras/pre-push -o .git/hooks/pre-push
+#   chmod +x .git/hooks/pre-push
 # Skip once: git push --no-verify
 
 command -v claude >/dev/null || { echo "claude CLI not found; skipping Preflight review"; exit 0; }
