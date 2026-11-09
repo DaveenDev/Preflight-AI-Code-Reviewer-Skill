@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Git pre-push hook: runs the preflight skill (via Claude Code) before every
+# push from your terminal, VS Code, or any Git client.
+# Install: cp pre-push .git/hooks/pre-push && chmod +x .git/hooks/pre-push
+# Skip once: git push --no-verify
+
+command -v claude >/dev/null || { echo "claude CLI not found; skipping Preflight review"; exit 0; }
+
+git_dir=$(git rev-parse --git-dir)
+head=$(git rev-parse HEAD)
+
+# Already reviewed and passed (e.g. Claude Code ran the gate before pushing).
+[ "$(cat "$git_dir/preflight-passed" 2>/dev/null)" = "$head" ] && exit 0
+
+base=$(git rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>/dev/null || echo origin/main)
+[ -z "$(git diff "$base"...HEAD)" ] && exit 0
+
+echo "Preflight: running code review on changes vs $base..."
+output=$(git diff "$base"...HEAD | claude -p "Use the preflight skill in pre-merge/pre-push gate mode. The piped input is the diff of the current branch vs $base. Read files in this repo for context. Do not modify files and do not run git push yourself. End with REVIEW_RESULT: PASS or REVIEW_RESULT: FAIL.")
+echo "$output"
+
+if printf '%s' "$output" | tail -n 5 | grep -q 'REVIEW_RESULT: PASS'; then
+  echo "$head" > "$git_dir/preflight-passed"
+  exit 0
+fi
+
+echo ""
+echo "Push blocked by Preflight. Fix the Critical/High issues, or push anyway with: git push --no-verify"
+exit 1

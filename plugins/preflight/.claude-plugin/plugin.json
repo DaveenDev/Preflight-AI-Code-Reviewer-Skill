@@ -1,0 +1,13 @@
+{
+  "name": "preflight",
+  "version": "1.0.0",
+  "description": "Deep code review (security, business logic, edge cases, N+1 queries, performance, architecture) plus a gate that blocks git push/merge until the review passes.",
+  "author": {
+    "name": "Ruben \"Dave\" Duran",
+    "url": "https://github.com/daveenDev"
+  },
+  "homepage": "https://github.com/daveenDev/preflight",
+  "repository": "https://github.com/daveenDev/preflight",
+  "license": "MIT",
+  "keywords": ["code-review", "security", "sql-injection", "n+1", "performance", "nextjs", "supabase", "firebase", "git-hooks"]
+}
