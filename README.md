@@ -62,9 +62,30 @@ mkdir -p ~/.claude/skills
 cp -r Preflight-AI-Code-Reviewer-Skill/plugins/preflight/skills/preflight ~/.claude/skills/preflight
 ```
 
+On Windows PowerShell (no bash needed):
+
+```powershell
+git clone --depth=1 https://github.com/DaveenDev/Preflight-AI-Code-Reviewer-Skill.git $env:TEMP\preflight
+New-Item -ItemType Directory -Force "$HOME\.claude\skills" | Out-Null
+Copy-Item -Recurse -Force "$env:TEMP\preflight\plugins\preflight\skills\preflight" "$HOME\.claude\skills\preflight"
+Remove-Item -Recurse -Force "$env:TEMP\preflight"
+```
+
 To install it for a single project, copy the folder to `.claude/skills/preflight` in that project instead.
 
 To update, run the installer again. To remove it, delete `~/.claude/skills/preflight`.
+
+### Check that it worked
+
+Start a new Claude Code session and ask it to `review my changes`, or run `/preflight:preflight` (plugin) or `/preflight` (skill only). With the plugin, `/plugin` should also list `preflight` as installed.
+
+### Troubleshooting
+
+- **"Repository not found", or a repo called `daveenDev/preflight` doesn't exist:** that's an old address from an early draft of this README. The only repo is `DaveenDev/Preflight-AI-Code-Reviewer-Skill`. Use the commands on this page, copied from the current README on GitHub.
+- **`/plugin install preflight@daveendev` says the marketplace isn't found:** run the `/plugin marketplace add` line first. The `daveendev` part is the marketplace name from `.claude-plugin/marketplace.json`, not a GitHub address.
+- **The `/preflight:preflight` command doesn't show up:** restart Claude Code. If you installed only the skill, use `/preflight` instead.
+- **The `curl ... | bash` command fails on Windows:** use the PowerShell commands above, or run the command in Git Bash or WSL.
+- **The push/merge gate says `jq not installed, skipping`:** install [jq](https://jqlang.org) to turn the gate on. It's skipped, not broken, without it.
 
 ## Usage
 
